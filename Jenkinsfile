@@ -2,12 +2,6 @@ pipeline {
 
 agent any
 
-environment {
-
-REPORT_DIR = "${WORKSPACE}/target/surefire-reports"
-
-}
-
 stages {
 
 stage('Checkout') {
@@ -24,7 +18,13 @@ stage('Run Tests') {
 
 steps {
 
-	sh 'mvn test'
+	script {
+		if (isUnix()) {
+			sh 'bash ./mvnw test'
+		} else {
+			bat 'mvnw.cmd test'
+		}
+	}
 
 }
 
